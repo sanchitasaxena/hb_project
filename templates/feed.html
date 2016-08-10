@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>Twitter</h1>
+  <ul>
+  {% for tweet in tweets %}
+    <li>
+      <a href="/feed/{{ tweet.tweet_id }}">{{ tweet.name }}</a>
+       <p>tweet<a href="{{ tweet.link }}">{{ tweet.link }}</a></p>
+    </li>
+  {% endfor %}
+  </ul>
+
+  <h1>News</h1>
+  <ul>
+  {% for article in articles %}
+    <li>
+      <a href="/feed/{{ article.article_id }}">{{ article.name }}</a>
+      <p>source<a href="{{ article.link }}">{{ article.link }}</a></p>
+    </li>
+  {% endfor %}
+  </ul>
+{% endblock %}

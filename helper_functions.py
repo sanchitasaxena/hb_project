@@ -39,6 +39,16 @@ def DisplayTrends(trends):
         print trend.name, trend.url
 
 
+#trends = api.GetTrendsCurrent()
+#trends
+#type(trends)
+#type(trends[0])
+
+#dir(trends[0])
+#['AsDict', 'AsJsonString', 'NewFromJsonDict', 'events', 'name', 
+#'param_defaults', 'promoted_content', 'query', 'timestamp', 'url', 'volume']
+
+
 def bing_search():
     headers = {'Ocp-Apim-Subscription-Key': API_KEY }
     r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/trendingtopics', headers=headers)
