@@ -5,18 +5,20 @@
   <ul>
   {% for tweet in tweets %}
     <li>
-      <a href="/feed/{{ tweet.tweet_id }}">{{ tweet.name }}</a>
-       <p>tweet<a href="{{ tweet.link }}">{{ tweet.link }}</a></p>
+      {{ tweet[0] }}
+      <p><a href="{{ tweet[1] }}">view</a></p>
     </li>
   {% endfor %}
   </ul>
 
   <h1>News</h1>
+
+
   <ul>
   {% for article in articles %}
     <li>
-      <a href="/feed/{{ article.article_id }}">{{ article.name }}</a>
-      <p>source<a href="{{ article.link }}">{{ article.link }}</a></p>
+      {{ article[0] }}
+      <p><a href="{{ article[1] }}">source</a></p>
     </li>
   {% endfor %}
   </ul>

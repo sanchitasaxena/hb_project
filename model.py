@@ -97,7 +97,7 @@ class Tweet(db.Model):
     #     return "<Topic topic_id=%s name=%s>" % (self.article_id,
     #                                              self.name)
 
-class Arcticle(db.Model):
+class Article(db.Model):
     """Trending topics database."""
 
     __tablename__ = "articles"

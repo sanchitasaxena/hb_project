@@ -3,7 +3,8 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, Rating, Tweet, Article, Topic
+from model import connect_to_db, db, User, Rating, Tweet, Article
+import helper_functions
 
 app = Flask(__name__)
 
@@ -33,17 +34,17 @@ def register_form():
 def register_process():
     """Process registration."""
 
-    # Get form variables
-    email = request.form["email"]
-    password = request.form["password"]
-    first_name = request.form["first_name"]
+    # # Get form variables
+    # email = request.form["email"]
+    # password = request.form["password"]
+    # first_name = request.form["first_name"]
 
-    new_user = User(email=email, password=password, first_name=first_name)
+    # new_user = User(email=email, password=password, first_name=first_name)
 
-    db.session.add(new_user)
-    db.session.commit()
+    # db.session.add(new_user)
+    # db.session.commit()
 
-    flash("User %s added." % email)
+    # flash("User %s added." % email)
     return redirect("/")
 
 
@@ -58,45 +59,47 @@ def login_form():
 def login_process():
     """Process login."""
 
-    # Get form variables
-    email = request.form["email"]
-    password = request.form["password"]
+    # # Get form variables
+    # email = request.form["email"]
+    # password = request.form["password"]
 
-    user = User.query.filter_by(email=email).first()
+    # user = User.query.filter_by(email=email).first()
 
-    if not user:
-        flash("No such user")
-        return redirect("/login")
+    # if not user:
+    #     flash("No such user")
+    #     return redirect("/login")
 
-    if user.password != password:
-        flash("Incorrect password")
-        return redirect("/login")
+    # if user.password != password:
+    #     flash("Incorrect password")
+    #     return redirect("/login")
 
-    session["user_id"] = user.user_id
+    # session["user_id"] = user.user_id
 
-    flash("Logged in")
+    # flash("Logged in")
     return redirect("/users/%s" % user.user_id)
 
 
 @app.route('/logout')
 def logout():
-    """Log out."""
+    # """Log out."""
 
-    del session["user_id"]
-    flash("Logged Out.")
+    # del session["user_id"]
+    # flash("Logged Out.")
     return redirect("/")
-####################LOG IN / LOG OUT / REGISTRATION HANDLING####################
+#################################FEED HANDLING##################################
 
-@app.route('/feed')
-def index():
+@app.route('/feed/trends')
+def feed():
     """Takes you to page that displays the feed."""
+# use functions from helper_functions to get the twitter and news feeds
+#print them out on the feed.html using jinja for loops
 
 
-
-
-
-    # tweets = Tweet.query.all()
-    # articles = Article.query.all()
+    tweets = helper_functions.display_trends()
+    print tweets
+    articles = helper_functions.bing_search()
+    print articles
+# article = helper_functions.GetTrendsCurrent
 
     return render_template("feed.html", tweets=tweets, articles=articles)
 
@@ -112,4 +115,4 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
-    app.run()
+    app.run(host="0.0.0.0")
