@@ -12,10 +12,14 @@ api = twitter.Api(
         access_token_key=os.environ.get('TWITTER_ACCESS_TOKEN_KEY'),
         access_token_secret=os.environ.get('TWITTER_ACCESS_TOKEN_SECRET'))
 
-def GetTrendsCurrent(self, exclude=None):
-        """Get the current top trending topics (global)
+
+def GetTrendsWoeid(self, woeid=23424977, exclude=None):
+        """Return the top 10 trending topics for a specific WOEID, if trending
+        information is available for it.
 
         Args:
+          woeid:
+            the Yahoo! Where On Earth ID for a location.
           exclude:
             Appends the exclude parameter as a request parameter.
             Currently only exclude=hashtags is supported. [Optional]
@@ -23,21 +27,48 @@ def GetTrendsCurrent(self, exclude=None):
         Returns:
           A list with 10 entries. Each entry contains a trend.
         """
+        url = '%s/trends/place.json' % (self.base_url)
+        parameters = {'id': woeid}
 
-        #this output is of a list of tuples with the format
-        #[Trend(Name=u'#LevantamientoDePesas', Time=2016-08-08T23:55:44Z, URL=http://), ...]
-        return self.GetTrendsWoeid(woeid=1, exclude=exclude)
+        if exclude:
+            parameters['exclude'] = exclude
+
+        resp = self._RequestUrl(url, verb='GET', data=parameters)
+        data = self._ParseAndCheckTwitter(resp.content.decode('utf-8'))
+        trends = []
+        timestamp = data[0]['as_of']
+
+        for trend in data[0]['trends']:
+            trends.append(Trend.NewFromJsonDict(trend, timestamp=timestamp))
+        return trends
+
+
+# def GetTrendsCurrent(self, exclude=None):
+#         """Get the current top trending topics (global)
+
+#         Args:
+#           exclude:
+#             Appends the exclude parameter as a request parameter.
+#             Currently only exclude=hashtags is supported. [Optional]
+
+#         Returns:
+#           A list with 10 entries. Each entry contains a trend.
+#         """
+
+#         #this output is of a list of tuples with the format
+#         #[Trend(Name=u'#LevantamientoDePesas', Time=2016-08-08T23:55:44Z, URL=http://), ...]
+#         return self.GetTrendsWoeid(woeid=1, exclude=exclude)
 
 # trends = api.GetTrendsCurrent()
 
 def display_trends():
     #setting the input to the list returned from GetTrendsCurrent()
-    trends = api.GetTrendsCurrent()
+    trends = api.GetTrendsWoeid(woeid=23424977, exclude=None)
     #for the list of objects trends, provide the name and url attribute to the
     top_tweets = []
     for trend in trends:
         top_tweets.append((trend.name, trend.url))
-    return top_tweets
+    return top_tweets[:20]
 
 
 def bing_search():
