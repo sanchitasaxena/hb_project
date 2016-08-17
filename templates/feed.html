@@ -5,8 +5,7 @@
   <ul>
   {% for tweet in tweets %}
     <li>
-      {{ tweet[0] }}
-      <p><a href="{{ tweet[1] }}">view</a></p>
+      <a target="_blank" href="{{ tweet[1] }}">{{ tweet[0] }}</a>
     </li>
   {% endfor %}
   </ul>
@@ -17,9 +16,31 @@
   <ul>
   {% for article in articles %}
     <li>
-      {{ article[0] }}
-      <p><a href="{{ article[1] }}">source</a></p>
+      <a href="{{ article[1] }}">{{ article[0] }}</a>
     </li>
   {% endfor %}
-  </ul>
+ </ul>
+
+
+<h1>TEST</h1>
+<ul>
+{% for key,value in news_search_articles.iteritems() %}
+   <li>{{ key }}
+    <ul>
+    {% for item in value %}
+      <li>{{ item[0] }}
+        <ul>
+          <li> {{ item[1] }} </li>
+        <ul>
+    {% endfor %}
+      </li>
+    </ul>
+{% endfor %}
+  </li>
+</ul>
+
+
+
+
+
 {% endblock %}

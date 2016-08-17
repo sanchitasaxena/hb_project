@@ -88,20 +88,49 @@ def logout():
     return redirect("/")
 #################################FEED HANDLING##################################
 
-@app.route('/feed/trends')
+@app.route('/feed')
 def feed():
     """Takes you to page that displays the feed."""
-# use functions from helper_functions to get the twitter and news feeds
-#print them out on the feed.html using jinja for loops
 
-
+    # gets the top trending tweets
     tweets = helper_functions.display_trends()
     print tweets
+
+    # empty list to store trending tweet names
+    tweet_search = []
+    # iterating over the list of tuples of tweets and urls
+    for tweet in tweets:
+        # adding the tuple names to the empty list
+        tweet_search.append(tweet[0])
+    # calls the function that creates a dictionary using the list as keys,
+    # making the values of the dictionaries the search results (a list of
+    # article names and their urls)
+    tweet_search_articles = helper_functions.get_topic_articles(tweet_search)
+    # printing the results
+    print tweet_search_articles
+
+    # gets the top trending articles
     articles = helper_functions.bing_search()
     print articles
-# article = helper_functions.GetTrendsCurrent
 
-    return render_template("feed.html", tweets=tweets, articles=articles)
+    # empty list to store article names for search
+    news_search = []
+    # for loop that iterates through the list of tuples of articles
+    for article in articles:
+        # adds the first element in tuple (article name) to the empty list
+        news_search.append(article[0])
+    # calls the function that creates a dictionary using the list as keys,
+    # making the values of the dictionaries the search results (a list of
+    # article names and their urls)
+    news_search_articles = helper_functions.get_topic_articles(news_search)
+    #printing the results
+    print news_search_articles
+
+    return render_template("feed.html",
+                            tweets=tweets,
+                            articles=articles,
+                            tweet_search_articles=tweet_search_articles,
+                            news_search_articles=news_search_articles)
 
 
 ################################################################################
