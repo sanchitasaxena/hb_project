@@ -1,45 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <h1>Twitter</h1>
-  <ul>
-  {% for tweet in tweets %}
-    <li>
-      <a target="_blank" href="{{ tweet[1] }}">{{ tweet[0] }}</a>
-    </li>
-  {% endfor %}
-  </ul>
 
-  <h1>News</h1>
+<h1>Twitter</h1>
 
-
-  <ul>
-  {% for article in articles %}
-    <li>
-      <a href="{{ article[1] }}">{{ article[0] }}</a>
-    </li>
-  {% endfor %}
- </ul>
-
-
-<h1>TEST</h1>
-<ul>
-{% for key,value in news_search_articles.iteritems() %}
-   <li>{{ key }}
-    <ul>
+{% for key,value in tweet_search_articles.iteritems() %}
+   <h2>{{ key }}</h2>
     {% for item in value %}
-      <li>{{ item[0] }}
-        <ul>
-          <li> {{ item[1] }} </li>
-        <ul>
+    <div>
+      <div><a target="_blank" href="{{ item[1] }}">{{ item[0] }}</a></div>
+    </div>
     {% endfor %}
-      </li>
-    </ul>
 {% endfor %}
-  </li>
-</ul>
 
+<h1>News</h1>
 
+{% for key,value in news_search_articles.iteritems() %}
+   <h2>{{ key }}</h2>
+    {% for item in value %}
+    <div>
+      <div><a target="_blank" href="{{ item[1] }}">{{ item[0] }}</a></div>
+    </div>
+    {% endfor %}
+{% endfor %}
 
 
 
