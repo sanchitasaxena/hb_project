@@ -1,58 +1,84 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Project</title>
+    <link rel="stylesheet" 
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bootstrap-styles.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
 
 <script src="https://code.jquery.com/jquery.js"></script>
 
-  <div class="twitter_feed">
-    <h1 class="heading">Twitter</h1>
+<div class="container"> <h1>Project Title</h1>
+  <p class="lead">project description for everyone to read yay!</p>
+</div>
 
-    {% for key,value in tweet_search_articles.iteritems() %}
+<body>
 
-       <h2 class="twitter_trend_title">{{ key }}</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-lg-6">
+      <h3 class="heading">Trending Tweets</h3>
 
-        {% for item in value %}
+      {% for key,value in tweet_search_articles.iteritems() %}
 
-        <div class="all_articles">
-          <div class="article"><a class="aricle_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
+         <h4 class="twitter_trend_title"><pre>{{ key }}</pre></h4>
+
+          {% for item in value %}
+
+          <div class="all_tweet_articles">
+            <div class="article"><pre><a class="article_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
+            </pre></div>
           </div>
-        </div>
 
-        {% endfor %}
-
-    {% endfor %}
-  </div>
+          {% endfor %}
+      {% endfor %}
+    </div>
 
 
-<script>
-  var individual_article = document.getElementsByClass("article");
-  var all_articles = document.getElementsByClass("all_articles");
-  var links = document.getElementsByClass("article_link");
+    <div class="col-xs-12 col-md-6 col-lg-6">
+      <h3 class="heading">Trending New</h3>
 
+      {% for key,value in news_search_articles.iteritems() %}
 
+         <h4 class="news_trend_title"><pre>{{ key }}</pre></h4>
 
-</script>
+          {% for item in value %}
 
-
-
-  <div class="news_feed">
-    <h1 class="heading">News</h1>
-
-    {% for key,value in news_search_articles.iteritems() %}
-
-       <h2 class="news_trend_title">{{ key }}</h2>
-
-        {% for item in value %}
-
-        <div class="all_articles">
-          <div class="article"><a class="aricle_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
+          <div class="all_news_articles">
+            <div class="article"><pre><a class="article_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
+            </pre></div>
           </div>
-        </div>
 
-        {% endfor %}
-
-    {% endfor %}
+          {% endfor %}
+      {% endfor %}
+    </div>
   </div>
+</div>
 
+  <script>
+
+    $(".all_tweet_articles").hide();
+    $(".all_news_articles").hide();
+
+    function showTweetArticles(evt) {
+      $(".all_tweet_articles").toggle();
+    }
+        function showNewsArticles(evt) {
+      $(".all_news_articles").toggle();
+    }
+
+    $(".twitter_trend_title").click(showTweetArticles);
+    $(".news_trend_title").click(showNewsArticles);
+
+  </script>
+</body>
+
+</html>
 
 {% endblock %}

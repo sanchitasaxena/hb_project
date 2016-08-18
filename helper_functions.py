@@ -53,7 +53,7 @@ def display_trends():
     top_tweets = []
     for trend in trends:
         top_tweets.append((trend.name, trend.url))
-    top_tweets = top_tweets[:2]
+    top_tweets = top_tweets[:1]
     return top_tweets
 
 
@@ -65,7 +65,7 @@ def bing_search():
     r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/trendingtopics', headers=headers)
     results = json.loads(r.content)
     articles = []
-    for i in range(2):
+    for i in range(1):
         topic = results['value'][i]['name']
         topic_url = results['value'][i]['webSearchUrl']
         articles.append((topic, topic_url))
@@ -78,17 +78,23 @@ def bing_search_based_on_query(search):
     """
     headers = {'Ocp-Apim-Subscription-Key': API_KEY}
     payload = {'q': search}
+
     r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/search', params=payload, headers=headers)
     search_results = json.loads(r.content)
-    # search_articles = []
-    # # if we got results, add them to the dictionary, else keep the list empty
-    # if search_results['value']:
-    #     for i in range(len(search_results['value'])):
-    #         article_name = search_results['value'][i]['name']
-    #         article_url = search_results['value'][i]['url']
-    #         search_articles.append((article_name, article_url))
-    # return search_articles
-    return search_results
+    # open file, pass the json dictionary
+
+    # search_results = open(search)
+
+    search_articles = []
+    # if we got results, add them to the dictionary, else keep the list empty
+    if search_results['value']:
+        for i in range(len(search_results['value'])):
+            article_name = search_results['value'][i]['name']
+            article_url = search_results['value'][i]['url']
+            search_articles.append((article_name, article_url))
+    # search_results.close()
+
+    return search_articles
 
 def get_topic_articles(topics_trending):
     """ Takes the top trending tweet topics and bing searches, passes them as
