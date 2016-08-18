@@ -80,14 +80,15 @@ def bing_search_based_on_query(search):
     payload = {'q': search}
     r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/search', params=payload, headers=headers)
     search_results = json.loads(r.content)
-    search_articles = []
-    # if we got results, add them to the dictionary, else keep the list empty
-    if search_results['value']:
-        for i in range(len(search_results['value'])):
-            article_name = search_results['value'][i]['name']
-            article_url = search_results['value'][i]['url']
-            search_articles.append((article_name, article_url))
-    return search_articles
+    # search_articles = []
+    # # if we got results, add them to the dictionary, else keep the list empty
+    # if search_results['value']:
+    #     for i in range(len(search_results['value'])):
+    #         article_name = search_results['value'][i]['name']
+    #         article_url = search_results['value'][i]['url']
+    #         search_articles.append((article_name, article_url))
+    # return search_articles
+    return search_results
 
 def get_topic_articles(topics_trending):
     """ Takes the top trending tweet topics and bing searches, passes them as

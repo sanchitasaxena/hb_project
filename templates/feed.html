@@ -2,28 +2,57 @@
 {% block content %}
 
 
-<h1>Twitter</h1>
+<script src="https://code.jquery.com/jquery.js"></script>
 
-{% for key,value in tweet_search_articles.iteritems() %}
-   <h2>{{ key }}</h2>
-    {% for item in value %}
-    <div>
-      <div><a target="_blank" href="{{ item[1] }}">{{ item[0] }}</a></div>
-    </div>
+  <div class="twitter_feed">
+    <h1 class="heading">Twitter</h1>
+
+    {% for key,value in tweet_search_articles.iteritems() %}
+
+       <h2 class="twitter_trend_title">{{ key }}</h2>
+
+        {% for item in value %}
+
+        <div class="all_articles">
+          <div class="article"><a class="aricle_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
+          </div>
+        </div>
+
+        {% endfor %}
+
     {% endfor %}
-{% endfor %}
+  </div>
 
-<h1>News</h1>
 
-{% for key,value in news_search_articles.iteritems() %}
-   <h2>{{ key }}</h2>
-    {% for item in value %}
-    <div>
-      <div><a target="_blank" href="{{ item[1] }}">{{ item[0] }}</a></div>
-    </div>
+<script>
+  var individual_article = document.getElementsByClass("article");
+  var all_articles = document.getElementsByClass("all_articles");
+  var links = document.getElementsByClass("article_link");
+
+
+
+</script>
+
+
+
+  <div class="news_feed">
+    <h1 class="heading">News</h1>
+
+    {% for key,value in news_search_articles.iteritems() %}
+
+       <h2 class="news_trend_title">{{ key }}</h2>
+
+        {% for item in value %}
+
+        <div class="all_articles">
+          <div class="article"><a class="aricle_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
+          </div>
+        </div>
+
+        {% endfor %}
+
     {% endfor %}
-{% endfor %}
-
+  </div>
 
 
 {% endblock %}
