@@ -53,7 +53,7 @@ def display_trends():
     top_tweets = []
     for trend in trends:
         top_tweets.append((trend.name, trend.url))
-    top_tweets = top_tweets[:1]
+    top_tweets = top_tweets[:5]
     return top_tweets
 
 
@@ -65,7 +65,7 @@ def bing_search():
     r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/trendingtopics', headers=headers)
     results = json.loads(r.content)
     articles = []
-    for i in range(1):
+    for i in range(5):
         topic = results['value'][i]['name']
         topic_url = results['value'][i]['webSearchUrl']
         articles.append((topic, topic_url))

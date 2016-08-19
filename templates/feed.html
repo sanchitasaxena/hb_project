@@ -27,11 +27,11 @@
 
       {% for key,value in tweet_search_articles.iteritems() %}
 
-         <h4 class="twitter_trend_title"><pre>{{ key }}</pre></h4>
+         <h4 id="{{key.replace(" ", "")}}" class="twitter_trend_title"><pre>{{ key }}</pre></h4>
 
           {% for item in value %}
 
-          <div class="all_tweet_articles">
+          <div class="all_tweet_articles" data-tweet-trend="{{key.replace(" ", "")}}">
             <div class="article"><pre><a class="article_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
             </pre></div>
           </div>
@@ -46,11 +46,11 @@
 
       {% for key,value in news_search_articles.iteritems() %}
 
-         <h4 class="news_trend_title"><pre>{{ key }}</pre></h4>
+         <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
 
           {% for item in value %}
 
-          <div class="all_news_articles">
+          <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">
             <div class="article"><pre><a class="article_link" target="_blank" href="{{ item[1] }}">{{ item[0] }}</a>
             </pre></div>
           </div>
@@ -66,15 +66,27 @@
     $(".all_tweet_articles").hide();
     $(".all_news_articles").hide();
 
-    function showTweetArticles(evt) {
-      $(".all_tweet_articles").toggle();
+    // if (document.getElementByClass(".all_tweet_articles").innerHTML) {
+    //     function showTweetArticles(evt) {
+    //       $(".all_tweet_articles").toggle();
+    //     }
+    //   } else {
+    //     $(".all_tweet_articles").innerHTML("STUPID STUFF!");
+    // }
+    
+    function toggleTweetArticles(evt) {
+      var topicTitle = $(this).attr("id");
+      console.log(topicTitle);
+      $("div[data-tweet-trend='" + topicTitle + "']").toggle();
     }
-        function showNewsArticles(evt) {
-      $(".all_news_articles").toggle();
+    function toggleNewsArticles(evt) {
+      var topicTitle = $(this).attr("id");
+      console.log(topicTitle);
+      $("div[data-news-trend='" + topicTitle + "']").toggle();
     }
 
-    $(".twitter_trend_title").click(showTweetArticles);
-    $(".news_trend_title").click(showNewsArticles);
+    $(".twitter_trend_title").click(toggleTweetArticles);
+    $(".news_trend_title").click(toggleNewsArticles);
 
   </script>
 </body>
