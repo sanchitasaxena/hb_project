@@ -1,138 +1,67 @@
 from flask_sqlalchemy import SQLAlchemy
-
-# This is the connection to the PostgreSQL database; we're getting
-# this through the Flask-SQLAlchemy helper library. On this, we can
-# find the `session` object, where we do most of our interactions
-# (like committing, etc.)
+from datetime import datetime
 
 db = SQLAlchemy()
 
-#user class to create table of users (for sprint 2)
-class User(db.Model):
-    """User table."""
 
-    __tablename__ = "users"
+class TwitterAndNews(db.Model):
+    """ Table that stores the twitter and news trending topic string,
+    timestamp, and source (twitter|news). """
 
-    user_id = db.Column(db.Integer,
-                        autoincrement=True,
-                        primary_key=True)
-    first_name = db.Column(db.String(64), nullable=True)
-    email = db.Column(db.String(64), nullable=True)
-    password = db.Column(db.String(64), nullable=True)
+    __tablename__ = "trending"
 
-    # def __repr__(self):
-    #     """Provide helpful representation when printed."""
-
-    #     return "<User user_id=%s email=%s>" % (self.user_id,
-    #                                            self.email)
+    twitter_news_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    timestamp = db.Column(db.DateTime, db.ForeignKey('timestamps.timestamp'),
+                                                        nullable=False )
+    string = db.Column(db.String(500), nullable=False)
+    source = db.Column(db.String(20), nullable=False)
 
 
+    timestamp = db.relationship("LastRefresh",
+                                 backref=db.backref("trending",
+                                 order_by="timestamp"))
 
-#rating model for ratings table (for sprint 2)
-class Rating(db.Model):
-    """User ratings on trending topics."""
-
-    __tablename__ = "ratings"
-
-    rating_id = db.Column(db.Integer,
-                          autoincrement=True,
-                          primary_key=True)
-    topic_id = db.Column(db.Integer,
-                         db.ForeignKey('topics.topic_id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    score = db.Column(db.Integer)
-
-    # Define relationship to user
-    user = db.relationship("User",
-                           backref=db.backref("ratings",
-                                              order_by=rating_id))
-
-    # Define relationship to topic
-    topic = db.relationship("Topic",
-                            backref=db.backref("ratings",
-                                               order_by=rating_id))
-
-    # def __repr__(self):
-    #     """Provide helpful representation when printed."""
-
-    #     s = "<Rating rating_id=%s movie_id=%s user_id=%s score=%s>"
-    #     return s % (self.rating_id, self.topic_id, self.user_id,
-    #                 self.score)
-
-
-#topic model for topics table (for sprint 1) bc topics can be stored without
-#ratings
-
-# class Topic(db.Model):
-#     """Trending topics database."""
-
-#     __tablename__ = "topics"
-
-#     topic_id = db.Column(db.Integer,
-#                          autoincrement=True,
-#                          primary_key=True)
-#     name = db.Column(db.String(100))
-#     link = db.Column(db.String(200))
-
-#     # def __repr__(self):
-#     #     """Provide helpful representation when printed."""
-
-#     #     return "<Topic topic_id=%s name=%s>" % (self.topic_id,
-#     #                                              self.name)
-
-class Tweet(db.Model):
-    """Trending topics database."""
-
-    __tablename__ = "tweets"
-
-    tweet_id = db.Column(db.Integer,
-                         autoincrement=True,
-                         primary_key=True)
-    name = db.Column(db.String(100))
-    link = db.Column(db.String(200))
-
-    # def __repr__(self):
-    #     """Provide helpful representation when printed."""
-
-    #     return "<Topic topic_id=%s name=%s>" % (self.article_id,
-    #                                              self.name)
-
-class Article(db.Model):
-    """Trending topics database."""
+class ArticleAssociation(db.Model):
+    """ Table that stores the twitter_news_id as a foreign key, article title
+    and article link. """
 
     __tablename__ = "articles"
 
-    article_id = db.Column(db.Integer,
-                         autoincrement=True,
-                         primary_key=True)
-    name = db.Column(db.String(100))
-    link = db.Column(db.String(200))
+    article_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    twitter_news_id = db.Column(db.Integer, db.ForeignKey('trending.twitter_news_id'))
+    article_title = db.Column(db.String(300), nullable=False)
+    article_link = db.Column(db.String(500), nullable=False)
 
-    # def __repr__(self):
-    #     """Provide helpful representation when printed."""
-
-    #     return "<Topic topic_id=%s name=%s>" % (self.article_id,
-    #                                              self.name)
+    timestamp = db.relationship("TwitterAndNews",
+                                 backref=db.backref("articles",
+                                 order_by="twitter_news_id"))
 
 
+class LastRefresh(db.Model):
+    """ Table that stores the last refresh timestamp. """
 
-#####################################################################
-# Helper functions
+    __tablename__ = "timestamps"
+
+    timestamp_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    timestamp = db.Column(db.DateTime, nullable=False)
+
+
+################################################################################
+
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
-    # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///ratings'
+    # Configure to use our database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///trends'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will
-    # leave you in a state of being able to work with the database
-    # directly.
-
+    # able to work with the database directly
     from server import app
     connect_to_db(app)
     print "Connected to DB."
+
