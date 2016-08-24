@@ -4,6 +4,13 @@ import twitter
 import requests
 import json
 
+from datetime import datetime
+
+from model import TwitterAndNews, ArticleAssociation, db, connect_to_db
+from server import *
+
+
+
 API_KEY = os.environ.get("BING_KEY_TWO")
 
 api = twitter.Api(
@@ -96,6 +103,8 @@ def bing_search_based_on_query(search):
 
     return search_articles
 
+
+
 def get_topic_articles(topics_trending):
     """ Takes the top trending tweet topics and bing searches, passes them as
         lists (one for bing, one for twitter), and uses the items in the lists
@@ -121,17 +130,100 @@ def get_topic_articles(topics_trending):
 
 
 
+def create_twitter_topics_trending():
 
-#calling the bing_search() function to get the top 10 trending news topics
-#bing_search()
-#calling the DisplayTrends(trends) function to get the top trending tweets
-#display_trends(trends)
+    tweets = display_trends()
+    # empty list to store trending tweet names
+    tweet_search = []
+    # iterating over the list of tuples of tweets and urls
+    for tweet in tweets:
+        # adding the tuple names to the empty list
+         tweet_search.append(tweet[0])
 
-#trends = api.GetTrendsCurrent()
-#trends
-#type(trends)
-#type(trends[0])
+    # calls the function that creates a dictionary using the list as keys,
+    # making the values of the dictionaries the search results (a list of
+    # article names and their urls)
+    tweet_search_articles = get_topic_articles(tweet_search)
 
-#dir(trends[0])
-#['AsDict', 'AsJsonString', 'NewFromJsonDict', 'events', 'name',
-#'param_defaults', 'promoted_content', 'query', 'timestamp', 'url', 'volume']
+    return tweet_search_articles
+
+def create_news_topics_trending():
+
+    news_trends = bing_search()
+    # empty list to store article names for search
+    news_search = []
+    # for loop that iterates through the list of tuples of articles
+    for news in news_trends:
+        # adds the first element in tuple (article name) to the empty list
+        news_search.append(news[0])
+
+    # calls the function that creates a dictionary using the list as keys,
+    # making the values of the dictionaries the search results (a list of
+    # article names and their urls)
+
+    news_search_articles = get_topic_articles(news_search)
+
+    return news_search_articles
+
+#DO I EVEN NEED THIS!
+def save_trends_to_database():
+
+    # function that outputs list of tweets trending as tuples
+    tweet_tuple_list = display_trends()
+    for tweet_topic in tweet_tuple_list:
+        string = tweet_topic[0]
+        source = 'twitter'
+        timestamp = datetime.now()
+
+        adding_stuff = TwitterAndNews(timestamp=timestamp, string=string, source=source)
+
+        db.session.add(adding_stuff)
+
+    # function that outputs a list of the news topics trending as tuples
+    news_tuple_list = bing_search()
+
+    for news_topic in news_tuple_list:
+        string = news_topic[0]
+        source = 'news'
+        timestamp = datetime.now()
+
+        adding_stuff = TwitterAndNews(timestamp=timestamp, string=string, source=source)
+
+        db.session.add(adding_stuff)
+
+
+    db.session.commit()
+
+def save_articles_to_database():
+    #twitter
+    twitter_dictionary = create_twitter_topics_trending()
+
+    for key, values in twitter_dictionary.items():
+        for item in values:
+            article_title = item[0]
+            article_link = item[1]
+            adding_stuff = ArticleAssociation(article_title=article_title,
+                                              article_link=article_link,
+                                              topic_string=key)
+            db.session.add(adding_stuff)
+
+    #news
+    news_dictionary = create_news_topics_trending()
+
+    for key, values in news_dictionary.items():
+        for item in values:
+            article_title = item[0]
+            article_link = item[1]
+            adding_stuff = ArticleAssociation(article_title=article_title,
+                                              article_link=article_link,
+                                              topic_string=key)
+            db.session.add(adding_stuff)
+
+    db.session.commit()
+
+
+
+if __name__ == "__main__":
+    # able to work with the database directly
+    connect_to_db(app)
+    print "Connected to DB."
