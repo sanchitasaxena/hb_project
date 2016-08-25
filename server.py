@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, TwitterAndNews, ArticleAssociation
-import helper_functions
+from helper_functions import *
 from datetime import datetime
 
 app = Flask(__name__)
@@ -93,14 +93,19 @@ def index():
 def feed():
     """Takes you to page that displays the feed."""
 
-    last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()
-
+    last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()[0]
+    print
+    print
+    print last_refresh
+    print type(last_refresh)
+    # if statement to
+    # timestamp_now = datetime.now()
 
     if (datetime.now() - last_refresh).seconds > 3600:
 
         save_trends_to_database()
         save_articles_to_database()
-        last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()
+        last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()[0]
 
     tweets = TwitterAndNews.query.filter_by(timestamp=last_refresh, source='twitter').all()
     news_trends = TwitterAndNews.query.filter_by(timestamp=last_refresh, source='news').all()
