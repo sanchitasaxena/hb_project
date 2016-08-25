@@ -5,6 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, TwitterAndNews, ArticleAssociation
 import helper_functions
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -89,42 +90,25 @@ def index():
 #################################FEED HANDLING##################################
 
 @app.route('/feed')
-def feed(timestamp):
+def feed():
     """Takes you to page that displays the feed."""
 
-
-    # Query's DB to get things based on the datetime timestamp
-
-    # fetches the trending tweet strings and their articles.
-    tweets = TwitterAndNews.query.filter_by(timestamp=timestamp, source='twitter').all()
-
-    news_trends = TwitterAndNews.query.filter(timestamp=timestamp, source='news').all()
+    last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()
 
 
-    tweet_search_articles = ArticleAssociation(twitter_news_id=twitter_news_id).all()
-    #how would I be able to get the articles for the news and articles for tweets?
-    news_search_articles = ArticleAssociation(twitter_news_id=twitter_news_id).all()
+    if (datetime.now() - last_refresh).seconds > 3600:
 
-    # # gets the top trending tweets
-    # tweets = helper_functions.display_trends()
-    # print tweets
+        save_trends_to_database()
+        save_articles_to_database()
+        last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()
 
-    # tweet_search_articles = helper_functions.create_twitter_topics_trending()
+    tweets = TwitterAndNews.query.filter_by(timestamp=last_refresh, source='twitter').all()
+    news_trends = TwitterAndNews.query.filter_by(timestamp=last_refresh, source='news').all()
 
-    # print tweet_search_articles
-
-    # # gets the top trending articles
-    # news_trends = helper_functions.create_twitter_topics_trending()
-    # print news_trends
-
-    # news_search_articles = helper_functions.create_news_topics_trending
-    # print news_search_articles
 
     return render_template("feed.html",
                             tweets=tweets,
-                            news_trends=news_trends,
-                            tweet_search_articles=tweet_search_articles,
-                            news_search_articles=news_search_articles)
+                            news_trends=news_trends)
 
 
 ################################################################################

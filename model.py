@@ -18,14 +18,14 @@ class TwitterAndNews(db.Model):
 
 
 class ArticleAssociation(db.Model):
-    """ Table that stores the twitter_news_id as a foreign key, article title
-    and article link. """
+    """ Table that stores article title and article link. """
 
     __tablename__ = "articles"
 
     article_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     topic_string = db.Column(db.String, nullable=False)
     article_title = db.Column(db.String(300), nullable=False)
+    # changed the string length from 500 to 1000 characters... hope this works
     article_link = db.Column(db.String(500), nullable=False)
 
 
