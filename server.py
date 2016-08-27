@@ -94,15 +94,8 @@ def feed():
     """Takes you to page that displays the feed."""
 
     last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()[0]
-    print
-    print
-    print last_refresh
-    print type(last_refresh)
-    # if statement to
-    # timestamp_now = datetime.now()
 
     if (datetime.now() - last_refresh).seconds > 3600:
-
         save_trends_to_database()
         save_articles_to_database()
         last_refresh = db.session.query(TwitterAndNews.timestamp).order_by(TwitterAndNews.timestamp.desc()).first()[0]
@@ -111,9 +104,36 @@ def feed():
     news_trends = TwitterAndNews.query.filter_by(timestamp=last_refresh, source='news').all()
 
 
+    #create a dictionary to store the articles for each topic
+    twitter_with_articles =  {}
+
+    for tweet in tweets:
+        tweet_articles = db.session.query(ArticleAssociation).filter(ArticleAssociation.topic_string == tweet.string).all()
+
+        tweet_article_info = []
+
+        for item in tweet_articles:
+            tweet_article_info.append({"title": item.article_title, "url": item.article_link})
+
+        twitter_with_articles[tweet.string] = tweet_article_info
+
+    news_with_articles =  {}
+
+    for news in news_trends:
+        news_articles = db.session.query(ArticleAssociation).filter(ArticleAssociation.topic_string == news.string).all()
+   
+        news_article_info = []
+
+        for article in news_articles:
+            news_article_info.append({"title": article.article_title, "url": article.article_link})
+
+        news_with_articles[news.string] = news_article_info
+
     return render_template("feed.html",
                             tweets=tweets,
-                            news_trends=news_trends)
+                            news_trends=news_trends,
+                            twitter_with_articles=twitter_with_articles,
+                            news_with_articles=news_with_articles)
 
 
 ################################################################################

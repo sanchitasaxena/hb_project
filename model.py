@@ -23,9 +23,8 @@ class ArticleAssociation(db.Model):
     __tablename__ = "articles"
 
     article_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    topic_string = db.Column(db.String, nullable=False)
-    article_title = db.Column(db.String(300), nullable=False)
-    # changed the string length from 500 to 1000 characters... hope this works
+    topic_string = db.Column(db.String(500), nullable=False)
+    article_title = db.Column(db.String(500), nullable=False)
     article_link = db.Column(db.String(500), nullable=False)
 
 

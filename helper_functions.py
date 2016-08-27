@@ -170,10 +170,10 @@ def save_trends_to_database():
 
     # function that outputs list of tweets trending as tuples
     tweet_tuple_list = display_trends()
+    timestamp = datetime.now()
     for tweet_topic in tweet_tuple_list:
         string = tweet_topic[0]
         source = 'twitter'
-        timestamp = datetime.now()
 
         adding_stuff = TwitterAndNews(timestamp=timestamp, string=string, source=source)
 
@@ -181,11 +181,9 @@ def save_trends_to_database():
 
     # function that outputs a list of the news topics trending as tuples
     news_tuple_list = bing_search()
-
     for news_topic in news_tuple_list:
         string = news_topic[0]
         source = 'news'
-        timestamp = datetime.now()
 
         adding_stuff = TwitterAndNews(timestamp=timestamp, string=string, source=source)
 
