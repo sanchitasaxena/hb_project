@@ -9,7 +9,6 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="bootstrap-styles.css">
   <script src="https://code.jquery.com/jquery.js"></script>
-
 </head>
 
 <script src="https://code.jquery.com/jquery.js"></script>
@@ -25,11 +24,13 @@
     <div class="col-xs-12 col-md-6 col-lg-6">
       <h3 class="heading">Trending Tweets</h3>
 
-      {% for tweet in tweets %}
-
-         <h4><pre>{{ tweet.string }}</pre></h4>
-
-
+      {% for key, value in twitter_with_articles.iteritems() %}
+        <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
+        {% for item in value %}
+        <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">
+            <li><a class="article_link" target="_blank" href = "{{ item['url'] }}" >{{ item['title'] }}</a></li>
+        </div>
+        {% endfor %}
       {% endfor %}
     </div>
 
@@ -37,20 +38,22 @@
     <div class="col-xs-12 col-md-6 col-lg-6">
       <h3 class="heading">Trending News</h3>
 
-      {% for news in news_trends %}
-
-         <h4><pre>{{ news.string }}</pre></h4>
-
-         
+      {% for key, value in news_with_articles.iteritems() %}
+        <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
+        {% for item in value %}
+        <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">
+            <li><a class="article_link" target="_blank" href = "{{ item['url'] }}" >{{ item['title'] }}</a></li>
+        </div>
+        {% endfor %}
       {% endfor %}
     </div>
   </div>
 </div>
 
-  // <script>
+  <script>
 
-  //   $(".all_tweet_articles").hide();
-  //   $(".all_news_articles").hide();
+    $(".all_tweet_articles").hide();
+    $(".all_news_articles").hide();
 
   //   // if (document.getElementByClass(".all_tweet_articles").innerHTML) {
   //   //     function showTweetArticles(evt) {
@@ -60,21 +63,21 @@
   //   //     $(".all_tweet_articles").innerHTML("STUPID STUFF!");
   //   // }
     
-  //   function toggleTweetArticles(evt) {
-  //     var topicTitle = $(this).attr("id");
-  //     console.log(topicTitle);
-  //     $("div[data-tweet-trend='" + topicTitle + "']").toggle();
-  //   }
-  //   function toggleNewsArticles(evt) {
-  //     var topicTitle = $(this).attr("id");
-  //     console.log(topicTitle);
-  //     $("div[data-news-trend='" + topicTitle + "']").toggle();
-  //   }
+    function toggleTweetArticles(evt) {
+      var topicTitle = $(this).attr("id");
+      console.log(topicTitle);
+      $("div[data-tweet-trend='" + topicTitle + "']").toggle();
+    }
+    function toggleNewsArticles(evt) {
+      var topicTitle = $(this).attr("id");
+      console.log(topicTitle);
+      $("div[data-news-trend='" + topicTitle + "']").toggle();
+    }
 
-  //   $(".twitter_trend_title").click(toggleTweetArticles);
-  //   $(".news_trend_title").click(toggleNewsArticles);
+    $(".twitter_trend_title").click(toggleTweetArticles);
+    $(".news_trend_title").click(toggleNewsArticles);
 
-  // </script>
+  </script>
 </body>
 
 </html>

@@ -121,7 +121,7 @@ def feed():
 
     for news in news_trends:
         news_articles = db.session.query(ArticleAssociation).filter(ArticleAssociation.topic_string == news.string).all()
-   
+        
         news_article_info = []
 
         for article in news_articles:
