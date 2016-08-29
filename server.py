@@ -129,6 +129,20 @@ def feed():
 
         news_with_articles[news.string] = news_article_info
 
+        # shared_topics
+
+    # tweet_words = tweet.string.split(' ')
+    # news_words = news_trends.string.split(' ')
+    #     #timestamp?????? keep track? DB??? probably not.....
+    # shared_topics = set([])
+
+    # for t in tweet_words:
+    #     for n in news_trends:
+    #         if t == n:
+    #             shared_topics.append(t)
+
+    
+
     return render_template("feed.html",
                             tweets=tweets,
                             news_trends=news_trends,
