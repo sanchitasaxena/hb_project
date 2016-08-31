@@ -26,13 +26,15 @@
 
       {% for key, value in twitter_with_articles.iteritems() %}
         <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
-        
-        {% for item in value %}
-        <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">
-            <li><a class="article_link" target="_blank" href = "{{ item['url'] }}" >{{ item['title'] }}</a></li>
-        </div>
-        {% endfor %}
-        
+        {% if value == [] %}
+          <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">pass</div>
+        {% else %}
+          {% for item in value %}
+          <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">
+              <li><a class="article_link" target="_blank" href = "{{ item['url'] }}" >{{ item['title'] }}</a></li>
+          </div>
+          {% endfor %}
+        {% endif %}
       {% endfor %}
     </div>
 
@@ -42,11 +44,15 @@
 
       {% for key, value in news_with_articles.iteritems() %}
         <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
-        {% for item in value %}
-        <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">
-            <li><a class="article_link" target="_blank" href = "{{ item['url'] }}" >{{ item['title'] }}</a></li>
-        </div>
-        {% endfor %}
+        {% if value == [] %}
+          <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">pass</div>
+        {% else %}
+          {% for item in value %}
+          <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">
+              <li><a class="article_link" target="_blank" href = "{{ item['url'] }}" >{{ item['title'] }}</a></li>
+          </div>
+          {% endfor %}
+        {% endif %}
       {% endfor %}
     </div>
   </div>

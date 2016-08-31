@@ -51,7 +51,7 @@ def feed():
             tweet_article_info.append({"title": item.article_title, "url": item.article_link})
 
         twitter_with_articles[tweet.string] = tweet_article_info
-
+    print twitter_with_articles
     news_with_articles = {}
 
     for news in news_trends:
@@ -63,7 +63,7 @@ def feed():
             news_article_info.append({"title": article.article_title, "url": article.article_link})
 
         news_with_articles[news.string] = news_article_info
-
+    print news_with_articles
         # shared_topics
 
 
