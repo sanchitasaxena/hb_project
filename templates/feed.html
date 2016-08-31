@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Project</title>
+    <title>Relevnt</title>
     <link rel="stylesheet" 
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="bootstrap-styles.css">
@@ -13,7 +13,7 @@
 
 <script src="https://code.jquery.com/jquery.js"></script>
 
-<div class="container"> <h1>Project Title</h1>
+<div class="container"> <h1>Relevnt</h1>
   <p class="lead">project description for everyone to read yay!</p>
 </div>
 
@@ -26,11 +26,13 @@
 
       {% for key, value in twitter_with_articles.iteritems() %}
         <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
+        
         {% for item in value %}
         <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">
             <li><a class="article_link" target="_blank" href = "{{ item['url'] }}" >{{ item['title'] }}</a></li>
         </div>
         {% endfor %}
+        
       {% endfor %}
     </div>
 
@@ -48,6 +50,23 @@
       {% endfor %}
     </div>
   </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-lg-6">
+      <h3 class="heading">Common Topics</h3>
+      <pre>
+        <ul>
+          {% for term in shared_topics %}
+          <li>{{ term }}</li>
+          {% endfor %}
+      </ul>
+      <pre>
+    </div>
+  </div>
+</div>
+
+
 </div>
 
   <script>
@@ -56,16 +75,6 @@
     $(".all_news_articles").hide();
 
 
-    // when you click on something and it doesn't
-
-  //   // if (document.getElementByClass(".all_tweet_articles").innerHTML) {
-  //   //     function showTweetArticles(evt) {
-  //   //       $(".all_tweet_articles").toggle();
-  //   //     }
-  //   //   } else {
-  //   //     $(".all_tweet_articles").innerHTML("STUPID STUFF!");
-  //   // }
-    
     function toggleTweetArticles(evt) {
       var topicTitle = $(this).attr("id");
       console.log(topicTitle);

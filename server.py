@@ -6,6 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, TwitterAndNews, ArticleAssociation
 from helper_functions import *
 from datetime import datetime
+import string
 
 app = Flask(__name__)
 
@@ -23,72 +24,6 @@ def index():
 
     return render_template("homepage.html")
 
-
-# @app.route('/register', methods=['GET'])
-# def register_form():
-#     """Show form for user signup."""
-
-#     return render_template("register_form.html")
-
-
-# @app.route('/register', methods=['POST'])
-# def register_process():
-#     """Process registration."""
-
-#     # # Get form variables
-#     # email = request.form["email"]
-#     # password = request.form["password"]
-#     # first_name = request.form["first_name"]
-
-#     # new_user = User(email=email, password=password, first_name=first_name)
-
-#     # db.session.add(new_user)
-#     # db.session.commit()
-
-#     # flash("User %s added." % email)
-#     return redirect("/")
-
-
-# @app.route('/login', methods=['GET'])
-# def login_form():
-#     """Show login form."""
-
-#     return render_template("login_form.html")
-
-
-# @app.route('/login', methods=['POST'])
-# def login_process():
-#     """Process login."""
-
-#     # # Get form variables
-#     # email = request.form["email"]
-#     # password = request.form["password"]
-
-#     # user = User.query.filter_by(email=email).first()
-
-#     # if not user:
-#     #     flash("No such user")
-#     #     return redirect("/login")
-
-#     # if user.password != password:
-#     #     flash("Incorrect password")
-#     #     return redirect("/login")
-
-#     # session["user_id"] = user.user_id
-
-#     # flash("Logged in")
-#     return redirect("/users/%s" % user.user_id)
-
-
-# @app.route('/logout')
-# def logout():
-#     # """Log out."""
-
-#     # del session["user_id"]
-#     # flash("Logged Out.")
-#     return redirect("/")
-#################################FEED HANDLING##################################
-
 @app.route('/feed')
 def feed():
     """Takes you to page that displays the feed."""
@@ -105,7 +40,7 @@ def feed():
 
 
     #create a dictionary to store the articles for each topic
-    twitter_with_articles =  {}
+    twitter_with_articles = {}
 
     for tweet in tweets:
         tweet_articles = db.session.query(ArticleAssociation).filter(ArticleAssociation.topic_string == tweet.string).all()
@@ -117,7 +52,7 @@ def feed():
 
         twitter_with_articles[tweet.string] = tweet_article_info
 
-    news_with_articles =  {}
+    news_with_articles = {}
 
     for news in news_trends:
         news_articles = db.session.query(ArticleAssociation).filter(ArticleAssociation.topic_string == news.string).all()
@@ -131,23 +66,50 @@ def feed():
 
         # shared_topics
 
+
     # tweet_words = tweet.string.split(' ')
-    # news_words = news_trends.string.split(' ')
-    #     #timestamp?????? keep track? DB??? probably not.....
-    # shared_topics = set([])
 
-    # for t in tweet_words:
-    #     for n in news_trends:
-    #         if t == n:
-    #             shared_topics.append(t)
+    #are any of the words in here in the tweet -- percentage (50%) same then related
 
+  
+
+    # compare two strings and return a description regarding similarities
+
+    news_words = []
+    for news in news_trends:
+        news_word_list = news.string.split(' ')
+        for n in news_word_list:
+            for c in string.punctuation:
+                n = n.replace(c,'')
+            news_words.append(n)
+    print news_words
+
+
+    tweet_words = []
+    for tweet in tweets:
+        whole_tweet = tweet.string
+        for c in string.punctuation:
+            tweet_word = whole_tweet.replace(c,'')
+        tweet_words.append(tweet_word)
+    print tweet_words
+
+    shared_topics = []   
+    for t in tweet_words:
+        for term in news_words:
+            # not in ['a', 'the', 'this', 'are', 'and', 'it'] and
+            if term in t:
+                shared_topics.append(term)
     
+    if not shared_topics:
+        print "nothing shared"
+
 
     return render_template("feed.html",
                             tweets=tweets,
                             news_trends=news_trends,
                             twitter_with_articles=twitter_with_articles,
-                            news_with_articles=news_with_articles)
+                            news_with_articles=news_with_articles,
+                            shared_topics=shared_topics)
 
 
 ################################################################################
