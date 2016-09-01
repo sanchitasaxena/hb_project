@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+
 from datetime import datetime
 
 db = SQLAlchemy()
@@ -37,23 +38,26 @@ def example_data():
 
     # sample twitter and news topics
 
-    tweet_one = TwitterAndNews(timestamp=datetime, string="phelps", source="twitter")
-    tweet_two = TwitterAndNews(timestamp=datetime, string="kim k", source="twitter")
-    news_one =  TwitterAndNews(timestamp=datetime, string="trump", source="news")
-    news_two = TwitterAndNews(timestamp=datetime, string="hurricane", source="news")
+    tweet_one = TwitterAndNews(timestamp='2016-08-27 18:09:58.921413', string="phelps", source="twitter")
+    tweet_two = TwitterAndNews(timestamp='2016-08-27 18:09:58.921413', string="kim k", source="twitter")
+    news_one = TwitterAndNews(timestamp='2016-08-27 18:09:58.921413', string="trump", source="news")
+    news_two = TwitterAndNews(timestamp='2016-08-27 18:09:58.921413', string="hurricane", source="news")
 
     # sample articles for each of the topics
-    article_one = ArticleAssociation(string="phelps", article_title="gold medal", article_link="www.olympics.com")
-    article_two = ArticleAssociation(string="phelps", article_title="best swimmer ever", article_link="www.swimmer.com")
-    article_three = ArticleAssociation(string="phelps", article_title="best athlete", article_link="www.swimmingiscool.com")
-    article_four = ArticleAssociation(string="kim k", article_title="kim and kanye", article_link="www.kardashians.com")
-    article_five = ArticleAssociation(string="trump", article_title="trumpinmexico", article_link="www.cnn.com")
-    article_six = ArticleAssociation(string="trump", article_title="trump is racist", article_link="www.huffingtonpost.com")
-    article_seven = ArticleAssociation(string="trump", article_title="trump is winning", article_link="www.vote4trump.com")
-    article_eight = ArticleAssociation(string="hurricane", article_title="hurricane katrina", article_link="www.nbc.com")
-    article_one = ArticleAssociation(string="hurricane", article_title="many homeless post katrina", article_link="www.fema.com")
+    article_one = ArticleAssociation(topic_string="phelps", article_title="gold medal", article_link="www.olympics.com")
+    article_two = ArticleAssociation(topic_string="phelps", article_title="best swimmer ever", article_link="www.swimmer.com")
+    article_three = ArticleAssociation(topic_string="phelps", article_title="best athlete", article_link="www.swimmingiscool.com")
+    article_four = ArticleAssociation(topic_string="kim k", article_title="kim and kanye", article_link="www.kardashians.com")
+    article_five = ArticleAssociation(topic_string="trump", article_title="trumpinmexico", article_link="www.cnn.com")
+    article_six = ArticleAssociation(topic_string="trump", article_title="trump is racist", article_link="www.huffingtonpost.com")
+    article_seven = ArticleAssociation(topic_string="trump", article_title="trump is winning", article_link="www.vote4trump.com")
+    article_eight = ArticleAssociation(topic_string="hurricane", article_title="hurricane katrina", article_link="www.nbc.com")
+    article_nine = ArticleAssociation(topic_string="hurricane", article_title="many homeless post katrina", article_link="www.fema.com")
 
-    db.session.add_all([df, dl, dm, leonard, liz, maggie, nadine])
+    db.session.add_all([tweet_one, tweet_two, news_one, news_two,
+                        article_one, article_two, article_three,
+                        article_four, article_five, article_six,
+                        article_seven, article_eight, article_nine])
     db.session.commit()
 
 
