@@ -9,9 +9,18 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="bootstrap-styles.css">
   <script src="https://code.jquery.com/jquery.js"></script>
+
+  <style>
+  .loading { display: none; }
+
+  </style>
 </head>
 
 <script src="https://code.jquery.com/jquery.js"></script>
+
+
+<div class="loading"></div>
+
 
 <div class="container"> <h1>Relevnt</h1>
   <p class="lead">project description for everyone to read yay!</p>
@@ -56,20 +65,7 @@
       {% endfor %}
     </div>
   </div>
-<!-- 
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-md-6 col-lg-6">
-        <h3 class="heading">Common Topics</h3>
-          <ul>
-            {% for term in shared_topics %}
-            <pre><li>{{ term }}</li></pre>
-            {% endfor %}
-        </ul>
-      </div>
-    </div>
-  </div>
- -->
+
 
 </div>
 
@@ -93,8 +89,11 @@
     $(".twitter_trend_title").click(toggleTweetArticles);
     $(".news_trend_title").click(toggleNewsArticles);
 
+
   </script>
 </body>
+
+
 
 </html>
 

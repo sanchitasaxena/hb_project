@@ -19,18 +19,15 @@ api = twitter.Api(
         access_token_key=os.environ.get('TWITTER_ACCESS_TOKEN_KEY'),
         access_token_secret=os.environ.get('TWITTER_ACCESS_TOKEN_SECRET'))
 
-
 def GetTrendsWoeid(self, woeid=23424977, exclude=None):
     """Return the top 10 trending topics for a specific WOEID, if trending
     information is available for it.
-
     Args:
       woeid:
         the Yahoo! Where On Earth ID for a location.
       exclude:
         Appends the exclude parameter as a request parameter.
         Currently only exclude=hashtags is supported. [Optional]
-
     Returns:
       A list with 10 entries. Each entry contains a trend.
     """
@@ -48,8 +45,7 @@ def GetTrendsWoeid(self, woeid=23424977, exclude=None):
     for trend in data[0]['trends']:
         trends.append(Trend.NewFromJsonDict(trend, timestamp=timestamp))
     return trends
-
-
+    
 def display_trends():
     """ Returns the top ten trending tweets in the United States as a list of
         tuples containing the tweet's name and tweet's URL.

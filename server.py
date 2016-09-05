@@ -75,41 +75,40 @@ def feed():
 
     # compare two strings and return a description regarding similarities
 
-    news_words = []
-    for news in news_trends:
-        news_word_list = news.string.split(' ')
-        for n in news_word_list:
-            for c in string.punctuation:
-                n = n.replace(c,'')
-            news_words.append(n)
-    print news_words
+    # news_words = []
+    # for news in news_trends:
+    #     news_word_list = news.string.split(' ')
+    #     for n in news_word_list:
+    #         for c in string.punctuation:
+    #             n = n.replace(c,'')
+    #         news_words.append(n)
+    # print news_words
 
 
-    tweet_words = []
-    for tweet in tweets:
-        whole_tweet = tweet.string
-        for c in string.punctuation:
-            tweet_word = whole_tweet.replace(c,'')
-        tweet_words.append(tweet_word)
-    print tweet_words
+    # tweet_words = []
+    # for tweet in tweets:
+    #     whole_tweet = tweet.string
+    #     for c in string.punctuation:
+    #         tweet_word = whole_tweet.replace(c,'')
+    #     tweet_words.append(tweet_word)
+    # print tweet_words
 
-    shared_topics = []   
-    for t in tweet_words:
-        for term in news_words:
-            # not in ['a', 'the', 'this', 'are', 'and', 'it'] and
-            if term in t:
-                shared_topics.append(term)
+    # shared_topics = []   
+    # for t in tweet_words:
+    #     for term in news_words:
+    #         # not in ['a', 'the', 'this', 'are', 'and', 'it'] and
+    #         if term in t:
+    #             shared_topics.append(term)
     
-    if not shared_topics:
-        print "nothing shared"
+    # if not shared_topics:
+    #     print "nothing shared"
 
 
     return render_template("feed.html",
                             tweets=tweets,
                             news_trends=news_trends,
                             twitter_with_articles=twitter_with_articles,
-                            news_with_articles=news_with_articles,
-                            shared_topics=shared_topics)
+                            news_with_articles=news_with_articles)
 
 
 ################################################################################
