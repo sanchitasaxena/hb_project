@@ -1,21 +1,32 @@
 import requests
 from bs4 import BeautifulSoup
 
-def get_stuff(topic):
+def get_stuff(topic_list):
 
-    url = 'https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q='+ str(topic) +'&oq='+ str(topic) +'&gs_l=news-cc.1.0.43j0l10j43i53.451776.453927.0.459304.14.8.0.6.6.1.197.773.4j4.8.0...0.0...1ac.1.VSlN5-ARhY0'
-    r = requests.get(url)
-    soup = BeautifulSoup(r.content, "html.parser")
-    # links = soup.find_all("a")
+    for topic in topic_list:
+        url = 'https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q='+ str(topic) +'&oq='+ str(topic) +'&gs_l=news-cc.1.0.43j0l10j43i53.451776.453927.0.459304.14.8.0.6.6.1.197.773.4j4.8.0...0.0...1ac.1.VSlN5-ARhY0'
+        r = requests.get(url)
+        soup = BeautifulSoup(r.content, "html.parser")
+        links = soup.find_all("a")
 
-    # for link in links:
-    #     print "<a href='%s'>%s</a>" %(link.get("href"), link.text)
+    article_list = []
+    for link in links:
+        article_link = link.get("href")
+        article_title = link.text
+        article_info = (article_title, article_link)
+        article_list.append(article_info)
 
-    general = soup.find_all("div", {"class":"g _cy"})
+    print article_list[:-25]
 
-    for item in general:
-        item_info = item.contents[0].find_all("div", {"class": "ts _V6c _Zmc _XO _knc _d7c"})[0].text
-        print item_info
+
+
+get_stuff(['Obama', 'Clinton', 'Michael Phelps'])
+
+    # general = soup.find_all("div", {"class":"g _cy"})
+
+    # for item in general:
+    #     item_info = item.contents[0].find_all("div", {"class": "ts _V6c _Zmc _XO _knc _d7c"})[0].text
+    #     print item_info
     
 
 
