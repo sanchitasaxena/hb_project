@@ -6,25 +6,43 @@
 
 
 <style>
-    .button { padding: 50px; border: red solid 3px; width: 350px;}
+  h1 { font-size: 10em; text-align:center; font-family: "Josefin Sans"; color:white; }
+  h1:hover { color:black;}
 
-    body { margin:none; background-color: white; font-family: "Josefin Sans"; background-image: url("templates/news.jpg");}
+  body {
+        background: url('static/news.jpg') right top;
+        background-size: cover;
+        margin:auto;
+    }
 
-    a:link { text-decoration: none;}
+  .button { padding: 50px; border: white solid 13px; width: 500px; margin: auto; font-weight:bold; border-radius: 20px;}
+  .button:hover { color:black; border: 13px solid black;}
+  main { font-family: "Josefin Sans"; }
 
-    @media only screen and (max-width: 1000px) { /* - Narrow Layout - */
-    main { width: 600px; margin: 0 auto; padding: 25px; }
-
-   
-
+  a:link { text-decoration: none; text-align: center; font-size: 5em; }
+  a:hover { color:black;}
+  a:visited {color:white;}
+  a:active { color:#b5eb04;}
+  @media only screen and (max-width: 1000px) { /* - Narrow Layout - */
+  main { width: 600px; margin: 0 auto; padding: 25px;} }
 
 </style>
 
-  <h1>Relevnt</h1>
-  <body>
+<body>
+  <div class="page_wrap">
+    <header class="header_wrap">
+      <h1>relevnt</h1>
+    </header>
+      <main>
+        <div class="hero_wrap">
+          <div class="button_wrap">
+              <a href="/feed"><div class="button"> click me </div></a>
+          </div>
+        </div>
+      </main>
 
-    <a href="/feed"><div class="button">Check Feed</div></a>
 
-  </body>
+  </div>
+</body>
 
 {% endblock %}

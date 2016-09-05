@@ -3,7 +3,6 @@ import sys
 import twitter
 import requests
 import json
-import requests
 from bs4 import BeautifulSoup
 
 from datetime import datetime
@@ -81,28 +80,12 @@ def bing_search_based_on_query(topic_list):
     """ Returns the top ten trending tweets in the United States as a list of
     tuples containing the tweet's name and tweet's URL.
     """
-    # headers = {'Ocp-Apim-Subscription-Key': API_KEY}
-    # payload = {'q': search}
-
-    # r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/search', params=payload, headers=headers)
-    # search_results = json.loads(r.content)
-    # # open file, pass the json dictionary
-
-    # # search_results = open(search)
-
-    # search_articles = []
-    # # if we got results, add them to the dictionary, else keep the list empty
-    # if search_results['value']:
-    #     for i in range(len(search_results['value'])):
-    #         article_name = search_results['value'][i]['name']
-    #         article_url = search_results['value'][i]['url']
-    #         search_articles.append((article_name, article_url))
-    # # search_results.close()
-
-    # return search_articles
-
+    print "You are in this function!!!!"
+    print
+    print
+    print
     for topic in topic_list:
-        url = 'https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q='+ str(topic) +'&oq='+ str(topic) +'&gs_l=news-cc.1.0.43j0l10j43i53.451776.453927.0.459304.14.8.0.6.6.1.197.773.4j4.8.0...0.0...1ac.1.VSlN5-ARhY0'
+        url = 'https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q='+str(topic)+'&oq='+str(topic)+'&gs_l=news'
         r = requests.get(url)
         soup = BeautifulSoup(r.content, "html.parser")
         links = soup.find_all("a")
