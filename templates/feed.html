@@ -23,9 +23,11 @@
   body { margin: 0 auto;}
 
   .all_news_articles, .all_tweet_articles { background-color: #00ACC1; border: solid 5px #00ACC1; color: white; font-size: 1.25em; font-weight:bold; margin-left:5px;}
-  .all_news_articles li, .all_tweet_articles li { list-style-type: circle; background-color: #00ACC1; border: solid 5px #00ACC1; color: white; font-size: 1.25em; font-weight:bold; margin-left:5px; }
 
+  .all_news_articles li, .all_tweet_articles li { list-style-type: square; background-color: #00ACC1; border: solid 5px #00ACC1; color: white; font-size: 1.25em; font-weight:bold; margin-left:5px; }
 
+  .all_news_articles li a:link, .all_tweet_articles li a:link { text-decoration: none; color: white; }
+  .all_news_articles li a:hover, .all_tweet_articles li a:hover { text-decoration: none; color: black; }
   </style>
 </head>
 
@@ -44,7 +46,7 @@
       {% for key, value in twitter_with_articles.iteritems() %}
         <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
         {% if value == [] %}
-          <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">pass</div>
+          <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">Sorry, this topic is not relevnt!</div>
         {% else %}
           {% for item in value %}
           <div class="all_tweet_articles" data-news-trend="{{key.replace(" ", "")}}">
@@ -62,7 +64,7 @@
       {% for key, value in news_with_articles.iteritems() %}
         <h4 id="{{key.replace(" ", "")}}" class="news_trend_title"><pre>{{ key }}</pre></h4>
         {% if value == [] %}
-          <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">pass</div>
+          <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">Sorry, this topic is not relevnt!</div>
         {% else %}
           {% for item in value %}
           <div class="all_news_articles" data-news-trend="{{key.replace(" ", "")}}">

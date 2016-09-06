@@ -76,28 +76,26 @@ def bing_search():
     return articles
 
 
-def bing_search_based_on_query(topic_list):
+def search_based_on_query(search):
     """ Returns the top ten trending tweets in the United States as a list of
     tuples containing the tweet's name and tweet's URL.
     """
-    print "You are in this function!!!!"
-    print
-    print
-    print
-    for topic in topic_list:
-        url = 'https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q='+str(topic)+'&oq='+str(topic)+'&gs_l=news'
-        r = requests.get(url)
-        soup = BeautifulSoup(r.content, "html.parser")
-        links = soup.find_all("a")
+   
+    url = 'https://www.google.com/search?hl=en&gl=us&tbm=nws&authuser=0&q='+ str(search) +'&oq='+ str(search) +'&gs_l=news'
+    r = requests.get(url)
+
+    soup = BeautifulSoup(r.content, "html.parser")
+    links = soup.find_all("a")
+
 
     search_articles = []
     for link in links:
         article_link = link.get("href")
         article_title = link.text
-        article_info = (article_title, article_link)
-        search_articles.append(article_info)
-
-    return search_articles[:-25]
+        if len(article_title) > 10:      
+            article_info = (article_title, article_link)
+            search_articles.append(article_info)
+    return search_articles[26:-25]
 
 
 
@@ -118,7 +116,7 @@ def get_topic_articles(topics_trending):
         # settng the topic as the key and the value as what's returend from
         # the function bing_search_based_on_query(topic)
         # ('Aricle Name', 'URL')
-        topic_articles[topic] = bing_search_based_on_query(topic)
+        topic_articles[topic] = search_based_on_query(topic)
     # returns a diciontary topic_articles = {
     #                                      'topic': [('Aricle Name', 'URL'),
     #                                                ('Aricle Name', 'URL')...]
